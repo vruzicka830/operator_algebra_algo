@@ -20,10 +20,13 @@ def compute_factorial(n):
 
 def is_prime(n):
 	if type(n) is not int:
-		raise TypeError("input must be integer at least 2")
+		raise TypeError("a prime is an integer")
 	if n < 2:
-		raise ValueError("0,1,negative numbers aren't prime")
-	result = "there's a problem"
+		raise ValueError("a prime is a positive integer "
+"that's at least 2")
+	result = "not sure"
+	if n==2 or n==3 or n==5:
+		return "not prime"
 	numbers = list(range(1,n+1))
 	if n%2 == 0:
 		return "not prime, it's even"
