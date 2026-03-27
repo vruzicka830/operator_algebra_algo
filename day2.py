@@ -1,22 +1,42 @@
 import numpy as np
 
-def direct_sum(A,B):
+def direct_sum(A, B):
+    """
+    Compute the direct sum of two matrices, represent by block diagonal matrix.
 
-	A_rows, A_cols = A.shape
-	B_rows, B_cols = B.shape
+    Args:
+        A: A 2D numpy array (matrix) of shape (m, n)
+        B: A 2D numpy array (matrix) of shape (p, q)
 
-	sum = np.zeros((A_rows+B_rows,A_cols+B_cols), dtype=complex)
+    Returns:
+        A 2D numpy array of shape (m+p, n+q) containing A and B on the diagonal
+    """
+    # Input validation
+    if not isinstance(A, np.ndarray) or not isinstance(B, np.ndarray):
+        raise TypeError("Both inputs must be numpy arrays.")
 
-	sum[0:A_rows, 0:A_cols] = A
-	sum[A_rows:A_rows+B_rows, A_cols:A_cols+B_cols] = B
+    if A.ndim != 2 or B.ndim != 2:
+        raise ValueError("Both inputs must be 2D arrays (matrices).")
 
-	return sum
+    # Get dimensions
+    A_rows, A_cols = A.shape
+    B_rows, B_cols = B.shape
 
-A = np.array([[1+1j, 2],[3,4-2j]], dtype = complex)
-B = np.array([[-3+5j, -2],[3+2j,1-1j]], dtype = complex)
+    # Use complex dtype to handle complex matrices (preserves real matrices too)
+    result = np.zeros((A_rows + B_rows, A_cols + B_cols), dtype=complex)
 
-print("Direct sum of A and B: ")
-print(direct_sum(A,B))
+    # Place A in the top-left block
+    result[0:A_rows, 0:A_cols] = A
 
-print("Tensor product of A and B: ")
-print(np.kron(A,B))
+    # Place B in the bottom-right block
+    result[A_rows:A_rows + B_rows, A_cols:A_cols + B_cols] = B
+
+    return result
+
+'''Example:
+A = np.array([[1,2],[3,4]])
+B = np.array([[5,6],[7,8]])
+C = direct_sum(A,B)
+s = direct_sum(A,B).shape
+print(C,s)
+'''
